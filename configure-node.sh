@@ -2,7 +2,14 @@ set -m
 
 /entrypoint.sh couchbase-server &
 
-sleep 15
+while :
+do
+    sleep 1;
+    echo 'couchbase is starting';
+    curl http://127.0.0.1:8091 &>/dev/null || continue;
+
+    break;
+done
 
 # Setup index and memory quota
 curl -v -X POST http://127.0.0.1:8091/pools/default -d memoryQuota=300 -d indexMemoryQuota=300
