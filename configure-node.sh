@@ -5,11 +5,13 @@ set -m
 while :
 do
     sleep 1;
-    echo 'couchbase is starting';
+    echo 'couchbase server is starting';
     curl http://127.0.0.1:8091 &>/dev/null || continue;
 
     break;
 done
+
+echo 'couchbase server is running'
 
 # Setup index and memory quota
 curl -v -X POST http://127.0.0.1:8091/pools/default -d memoryQuota=300 -d indexMemoryQuota=300
@@ -34,5 +36,7 @@ if [ "$TYPE" = "worker" ]; then
     sleep 10
     couchbase-cli rebalance -c $COUCHBASE_MASTER:8091 -u Administrator -p password --server-add=$IP
 fi;
+
+echo 'couchbase server is setup'
 
 fg 1
